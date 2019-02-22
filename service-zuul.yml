@@ -1,0 +1,25 @@
+server:
+  port: 9999
+
+spring:
+  application:
+    name: service-zuul
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+zuul:
+ # 会覆盖全局 sensitiveHeaders 设置.
+  sensitive-headers:
+ # 忽略已经添加的服务
+  ignoredServices: '**'
+  routes:
+  #配置路由
+    employee-service: /employee/**
+    api-a:
+      path: /api-a/**
+      serviceId: employee-service   #api-a 开头的请求跳转到  employee-service服务
+    api-b:
+      path: /api-b/**
+      serviceId: service-feign #api-b 开头的请求跳转到  service-feign服务
