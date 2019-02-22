@@ -9,6 +9,12 @@ spring:
       trace:
         ## 开启消息跟踪
         enabled: true
+  rabbitmq:
+    username: guest
+    password: guest
+    host: 192.168.1.9
+    port: 25672
+       
 
 #是否需要权限拉去，默认是true,如果不false就不允许你去拉取配置中心Server更新的内容
 management:
