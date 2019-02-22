@@ -1,0 +1,68 @@
+server:
+  port: 8765
+
+spring:
+  application:
+    name: employee-service
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/catering?characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false
+    username: root
+    password: root
+    dbcp2:
+      max-conn-lifetime-millis: 10000
+      min-idle: 5
+      initial-size: 2
+      validation-query: SELECT NOW()
+      default-auto-commit: false
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+  jackson:
+    locale: zh_CN
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  zipkin:
+    base-url: http://192.168.1.9:9411
+    enabled: true
+  sleuth:
+      sampler:
+        percentage: 1.0
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+# 以配置hystrix超时时间为例
+hystrix:
+  command:
+    #默认的超时时间设置
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 1000
+    # commandKey，默认为方法名
+    getProductOrderList:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+
+feign:
+  hystrix:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
